@@ -22,7 +22,14 @@ public class GetController {
     //REQUEST : http://hostname:port/greeting/DGSW
     //RESPONSE : hello DGSW
     @GetMapping("/greeting/{num1}/{combo}/{num2}")
-    public String SayHi1(@PathVariable String num1, @PathVariable  String combo, @PathVariable String num2){
+    public String SayHi1(@PathVariable String name){
+        return gs.sayHi(name);
+    }
+
+    //REQUEST : http://hostname:port/greeting/1/1/2
+    //RESPONSE : 3
+    @GetMapping("/greeting/{num1}/{combo}/{num2}")
+    public String PrintValue(@PathVariable String num1, @PathVariable  String combo, @PathVariable String num2){
         try {
             int d = Integer.parseInt(num1);
             return "The Answer is " + gs.sayValue(d, combo, num2);

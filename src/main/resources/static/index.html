@@ -24,6 +24,7 @@
         <div id="display-response"></div>
     </div>
     <script>
+        //계산기용 ajax 전송
         async function sendCalculate(){
             let num1 = $('#num1').val().trim();
             let how = $("#combo option:selected").val();
@@ -44,6 +45,21 @@
             }
         }
 
+
+        // 수업 시간에 했던 전송 방법
+        async function send2(){
+            let num1 = $('#name').val().trim();
+            if(!num1 || num1 === '') {
+                $('#display-response').html('입력부터 하시오');
+                return;
+            }
+            try {
+                let response = await $.get('/greeting/'+num1);
+                $('#display-response').html(JSON.stringify(response));
+            } catch(err) {
+                $('#display-response').html(JSON.stringify(err))
+            }
+        }
 
         function send1(){
             let name = $('#name').val().trim();
