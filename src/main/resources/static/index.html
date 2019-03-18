@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script
+            src="http://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<section>
+    <h1>Call AJAX</h1>
+    <div>
+        <input id="num1" placeholder="숫자 입력">
+        <select id="combo">
+            <option value="1">+</option>
+            <option value="2">-</option>
+            <option value="3">*</option>
+            <option value="4">/</option>
+        </select>
+        <input id="num2" placeholder="숫자 입력">
+        <button onclick="sendCalculate()">전송</button>
+        <div id="display-response"></div>
+    </div>
+    <script>
+        async function sendCalculate(){
+            let num1 = $('#num1').val().trim();
+            let how = $("#combo option:selected").val();
+            let num2 = $('#num2').val().trim();
+            if(!num1 || num1 === '') {
+                $('#display-response').html('입력부터 하시오');
+                return;
+            }
+            if(!num2 || num2 === '') {
+                $('#display-response').html('입력부터 하시오');
+                return;
+            }
+            try {
+                let response = await $.get('/greeting/'+num1+'/'+how+'/'+num2);
+                $('#display-response').html(JSON.stringify(response));
+            } catch(err) {
+                $('#display-response').html(JSON.stringify(err))
+            }
+        }
+
+
+        function send1(){
+            let name = $('#name').val().trim();
+            if(!name || name === '') {
+                $('#display-response').html('입력부터 하시오');
+                return;
+            }
+            $.get('/greeting/'+name)
+                .done((response) => {
+                    $('#display-response').html(JSON.stringify(response));
+                })
+                .fail((err) => {
+                    $('#display-response').html(JSON.stringify(err));
+                })
+                .always(() => {
+                    $('#display-response').html(
+                        $('#display-response').html() + '<br>항상실행'
+                    );
+                });
+        }
+        function send(){
+            let name = $('#name').val().trim();
+            if(!name || name === '') return;
+            //XMLHttpRequest
+            $.ajax({
+                url : '/greeting/'+ name,
+                type : 'GET',
+                async : true,
+                success : function(response){
+                    $('#display-response').html(JSON.stringify(response));
+                },
+                error : function(err){
+                    $('#display-response').html(JSON.stringify(err));
+                }
+            });
+        }
+    </script>
+</section>
+</body>
+</html>
